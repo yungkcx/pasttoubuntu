@@ -4,7 +4,8 @@
 
 from sys import argv
 from os.path import splitext
-import requests
+from urllib import request, parse
+
 
 POSTER = 'yungkcx'  # This is my ID, use yours
 
@@ -100,9 +101,10 @@ def main():
         'syntax': syntax,
         'content': file_content
     }
-    resp = requests.post(url=url, data=data)
-    if resp.status_code != 200:
-        error('status code ' + resp.status_code)
+    data = parse.urlencode(data).encode('utf-8')
+    resp = request.urlopen(url=url, data=data)
+    if resp.code != 200:
+        error('status code ' + resp.code)
     elif len(resp.url[24:]) < 8:
         error('paste failed')
     print(resp.url)
@@ -110,3 +112,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
