@@ -5,6 +5,7 @@
 from sys import argv
 from os.path import splitext
 import requests
+import chardet
 
 POSTER = 'yungkcx'  # This is my ID, use yours
 
@@ -92,8 +93,12 @@ def main():
         syntax = argv[2]
     else:
         syntax = get_syntax(argv[1])
-    print('use syntax: ' + syntax)
-    with open(argv[1], 'r', encoding='utf-8') as file:
+    print('syntax: ' + syntax)
+    encoding = 'utf-8'
+    with open(argv[1], 'rb') as f:
+        encoding = chardet.detect(f.read())['encoding']
+        print('encoding: ' + encoding)
+    with open(argv[1], 'r', encoding=encoding) as file:
         file_content = file.read()
     data = {
         'poster': POSTER,
